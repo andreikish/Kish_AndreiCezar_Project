@@ -1,0 +1,12 @@
+@model Kish_AndreiCezar_Project.Models.Mechanic
+@{
+    ViewData["Title"] = "Detalii mecanic";
+}
+
+<h2>@Model.FullName</h2>
+<p>Specializare: @Model.Specialty</p>
+<p>Experienta: @Model.YearsExperience ani</p>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editeaza</a>
+<a asp-action="Index" class="btn btn-secondary">Inapoi</a>
+

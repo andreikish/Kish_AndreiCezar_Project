@@ -1,0 +1,19 @@
+@model Kish_AndreiCezar_Project.Models.Manufacturer
+@{
+    ViewData["Title"] = "Detalii producator";
+}
+
+<h2>@Model.Name</h2>
+<p class="text-muted">@Model.Country</p>
+
+<h5 class="mt-4">Modele asociate</h5>
+<ul>
+    @foreach (var m in Model.Models)
+    {
+        <li>@m.Name (din @m.YearFrom)</li>
+    }
+</ul>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editeaza</a>
+<a asp-action="Index" class="btn btn-secondary">Inapoi</a>
+

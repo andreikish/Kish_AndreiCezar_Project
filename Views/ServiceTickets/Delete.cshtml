@@ -1,0 +1,15 @@
+@model Kish_AndreiCezar_Project.Models.ServiceTicket
+@{
+    ViewData["Title"] = "Sterge comanda";
+}
+
+<h2>Stergi comanda #@Model.Id?</h2>
+<p>Client: @Model.Customer?.FullName</p>
+<p>Model: @Model.CarModel?.Manufacturer?.Name @Model.CarModel?.Name</p>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Confirma</button>
+    <a asp-action="Index" class="btn btn-secondary">Renunta</a>
+</form>
+

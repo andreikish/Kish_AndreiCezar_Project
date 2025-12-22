@@ -1,0 +1,12 @@
+@model Kish_AndreiCezar_Project.Models.CarModel
+@{
+    ViewData["Title"] = "Detalii model";
+}
+
+<h2>@Model.Name</h2>
+<p>Producator: @Model.Manufacturer?.Name</p>
+<p>An lansare: @Model.YearFrom</p>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editeaza</a>
+<a asp-action="Index" class="btn btn-secondary">Inapoi</a>
+

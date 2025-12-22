@@ -1,0 +1,160 @@
+﻿@model Kish_AndreiCezar_Project.Models.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Panou general";
+}
+
+<h1 class="mb-4">Panou general service auto</h1>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Producatori</h6>
+                <h3>@Model.ManufacturersCount</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Modele</h6>
+                <h3>@Model.CarModelsCount</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Comenzi active</h6>
+                <h3>@Model.TicketsCount</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Clienti</h6>
+                <h3>@Model.CustomersCount</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Mecanici</h6>
+                <h3>@Model.MechanicsCount</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Ultimele comenzi</span>
+                <a asp-controller="ServiceTickets" asp-action="Index" class="btn btn-sm btn-outline-primary">Vezi toate</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Client</th>
+                            <th>Model</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var t in Model.LatestTickets)
+                        {
+                            <tr>
+                                <td>@t.IntakeDate.ToString("yyyy-MM-dd")</td>
+                                <td>@t.Customer?.FullName</td>
+                                <td>@t.CarModel?.Manufacturer?.Name @t.CarModel?.Name</td>
+                                <td>@t.Status</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm mb-3">
+            <div class="card-header">Predictie cost (ML.NET prin REST)</div>
+            <div class="card-body">
+                <form asp-action="Predict" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <label asp-for="PredictionForm.MileageKm" class="form-label">Kilometraj</label>
+                            <input asp-for="PredictionForm.MileageKm" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="PredictionForm.EstimatedHours" class="form-label">Ore estimate</label>
+                            <input asp-for="PredictionForm.EstimatedHours" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Premium?</label>
+                            <div class="form-check">
+                                <input class="form-check-input" asp-for="PredictionForm.IsPremiumBrand" />
+                                <label class="form-check-label" asp-for="PredictionForm.IsPremiumBrand">Brand premium</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex align-items-center gap-3">
+                        <button type="submit" class="btn btn-primary">Genereaza</button>
+                        @if (Model.PredictedCost is not null)
+                        {
+                            <span class="fw-bold">Cost estimat: @Model.PredictedCost lei</span>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header">Plan service (gRPC)</div>
+            <div class="card-body">
+                <form asp-action="Advisor" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row g-2">
+                        <div class="col-md-8">
+                            <label asp-for="GrpcForm.CarModel" class="form-label">Model</label>
+                            <input asp-for="GrpcForm.CarModel" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="GrpcForm.MileageKm" class="form-label">Kilometraj</label>
+                            <input asp-for="GrpcForm.MileageKm" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex align-items-center gap-3">
+                        <button type="submit" class="btn btn-outline-primary">Solicita</button>
+                        @if (Model.GrpcResult is not null)
+                        {
+                            <span class="fw-bold">@Model.GrpcResult.Severity</span>
+                        }
+                    </div>
+                </form>
+
+                @if (Model.GrpcResult is not null)
+                {
+                    <div class="mt-3">
+                        <p class="fw-bold">@Model.GrpcResult.Recommendation</p>
+                        <ul>
+                            @foreach (var t in Model.GrpcResult.SuggestedTasks)
+                            {
+                                <li>@t</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

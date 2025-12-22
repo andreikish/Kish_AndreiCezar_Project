@@ -1,0 +1,33 @@
+@model Kish_AndreiCezar_Project.Models.CarModel
+@{
+    ViewData["Title"] = "Editeaza model";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" class="mt-3">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="YearFrom" class="form-label"></label>
+        <input asp-for="YearFrom" class="form-control" />
+        <span asp-validation-for="YearFrom" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ManufacturerId" class="form-label">Producator</label>
+        <select asp-for="ManufacturerId" asp-items="ViewBag.ManufacturerId" class="form-select"></select>
+        <span asp-validation-for="ManufacturerId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Salveaza</button>
+    <a asp-action="Index" class="btn btn-secondary">Inapoi</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -1,0 +1,67 @@
+@model Kish_AndreiCezar_Project.Models.ServiceTicket
+@{
+    ViewData["Title"] = "Editeaza comanda";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" class="mt-3">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label asp-for="CustomerId" class="form-label">Client</label>
+            <select asp-for="CustomerId" asp-items="ViewBag.CustomerId" class="form-select"></select>
+            <span asp-validation-for="CustomerId" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="CarModelId" class="form-label">Model</label>
+            <select asp-for="CarModelId" asp-items="ViewBag.CarModelId" class="form-select"></select>
+            <span asp-validation-for="CarModelId" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="MechanicId" class="form-label">Mecanic</label>
+            <select asp-for="MechanicId" asp-items="ViewBag.MechanicId" class="form-select"></select>
+            <span asp-validation-for="MechanicId" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="IntakeDate" class="form-label">Data intrare</label>
+            <input asp-for="IntakeDate" class="form-control" type="date" />
+            <span asp-validation-for="IntakeDate" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="MileageKm" class="form-label">Kilometraj</label>
+            <input asp-for="MileageKm" class="form-control" />
+            <span asp-validation-for="MileageKm" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="EstimatedHours" class="form-label">Ore estimate</label>
+            <input asp-for="EstimatedHours" class="form-control" />
+            <span asp-validation-for="EstimatedHours" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="EstimatedCost" class="form-label">Cost estimat (lei)</label>
+            <input asp-for="EstimatedCost" class="form-control" />
+            <span asp-validation-for="EstimatedCost" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Complaint" class="form-label">Descriere</label>
+            <textarea asp-for="Complaint" rows="3" class="form-control"></textarea>
+            <span asp-validation-for="Complaint" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Status" class="form-label">Status</label>
+            <input asp-for="Status" class="form-control" />
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Salveaza</button>
+        <a asp-action="Index" class="btn btn-secondary">Inapoi</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

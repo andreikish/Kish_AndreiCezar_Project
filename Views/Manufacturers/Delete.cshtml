@@ -1,0 +1,14 @@
+@model Kish_AndreiCezar_Project.Models.Manufacturer
+@{
+    ViewData["Title"] = "Sterge producator";
+}
+
+<h2>Stergi @Model.Name?</h2>
+<p>Tara: @Model.Country</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Confirma</button>
+    <a asp-action="Index" class="btn btn-secondary">Renunta</a>
+</form>
+

@@ -1,0 +1,14 @@
+@model Kish_AndreiCezar_Project.Models.Mechanic
+@{
+    ViewData["Title"] = "Sterge mecanic";
+}
+
+<h2>Stergi @Model.FullName?</h2>
+<p>Specializare: @Model.Specialty</p>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Confirma</button>
+    <a asp-action="Index" class="btn btn-secondary">Renunta</a>
+</form>
+

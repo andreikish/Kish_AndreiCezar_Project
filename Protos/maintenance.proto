@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "Kish_AndreiCezar_Project.Protos";
+
+package maintenance;
+
+service MaintenanceAdvisor {
+  rpc GetSchedule (MaintenanceRequest) returns (MaintenanceReply);
+}
+
+message MaintenanceRequest {
+  string carModel = 1;
+  int32 mileageKm = 2;
+}
+
+message MaintenanceReply {
+  string recommendation = 1;
+  string severity = 2;
+  repeated string suggestedTasks = 3;
+}
+

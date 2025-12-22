@@ -1,0 +1,12 @@
+@model Kish_AndreiCezar_Project.Models.Customer
+@{
+    ViewData["Title"] = "Detalii client";
+}
+
+<h2>@Model.FullName</h2>
+<p>Email: @Model.Email</p>
+<p>Telefon: @Model.Phone</p>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editeaza</a>
+<a asp-action="Index" class="btn btn-secondary">Inapoi</a>
+
