@@ -62,6 +62,7 @@
                             <th>Data</th>
                             <th>Client</th>
                             <th>Model</th>
+                            <th>Tip</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -72,6 +73,7 @@
                                 <td>@t.IntakeDate.ToString("yyyy-MM-dd")</td>
                                 <td>@t.Customer?.FullName</td>
                                 <td>@t.CarModel?.Manufacturer?.Name @t.CarModel?.Name</td>
+                                <td>@t.CarModel?.VehicleType</td>
                                 <td>@t.Status</td>
                             </tr>
                         }
@@ -82,32 +84,93 @@
     </div>
     <div class="col-lg-6">
         <div class="card shadow-sm mb-3">
-            <div class="card-header">Predictie cost (ML.NET prin REST)</div>
+            <div class="card-header">Predictie maintenance (ML.NET prin REST)</div>
             <div class="card-body">
                 <form asp-action="Predict" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row g-2">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.VehicleModel" class="form-label">Tip vehicul</label>
+                            <input asp-for="PredictionForm.VehicleModel" class="form-control" placeholder="ex: Car" />
+                        </div>
+                        <div class="col-md-6">
                             <label asp-for="PredictionForm.MileageKm" class="form-label">Kilometraj</label>
-                            <input asp-for="PredictionForm.MileageKm" class="form-control" />
+                            <input asp-for="PredictionForm.MileageKm" class="form-control" type="number" step="0.1" />
                         </div>
-                        <div class="col-md-4">
-                            <label asp-for="PredictionForm.EstimatedHours" class="form-label">Ore estimate</label>
-                            <input asp-for="PredictionForm.EstimatedHours" class="form-control" />
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.VehicleAge" class="form-label">Varsta vehicul (ani)</label>
+                            <input asp-for="PredictionForm.VehicleAge" class="form-control" type="number" step="0.1" />
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Premium?</label>
-                            <div class="form-check">
-                                <input class="form-check-input" asp-for="PredictionForm.IsPremiumBrand" />
-                                <label class="form-check-label" asp-for="PredictionForm.IsPremiumBrand">Brand premium</label>
-                            </div>
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.MaintenanceHistory" class="form-label">Istoric maintenance</label>
+                            <select asp-for="PredictionForm.MaintenanceHistory" class="form-select">
+                                <option value="">Selecteaza...</option>
+                                <option value="Good">Bun</option>
+                                <option value="Average">Mediu</option>
+                                <option value="Poor">Proast</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.ReportedIssues" class="form-label">Probleme raportate</label>
+                            <input asp-for="PredictionForm.ReportedIssues" class="form-control" type="number" step="0.1" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.FuelType" class="form-label">Tip combustibil</label>
+                            <select asp-for="PredictionForm.FuelType" class="form-select">
+                                <option value="">Selecteaza...</option>
+                                <option value="Petrol">Benzina</option>
+                                <option value="Diesel">Motorina</option>
+                                <option value="Electric">Electric</option>
+                                <option value="Hybrid">Hibrid</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.TransmissionType" class="form-label">Tip transmisie</label>
+                            <select asp-for="PredictionForm.TransmissionType" class="form-select">
+                                <option value="">Selecteaza...</option>
+                                <option value="Manual">Manual</option>
+                                <option value="Automatic">Automat</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.EngineSize" class="form-label">Marime motor (L)</label>
+                            <input asp-for="PredictionForm.EngineSize" class="form-control" type="number" step="0.1" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.TireCondition" class="form-label">Stare anvelope</label>
+                            <select asp-for="PredictionForm.TireCondition" class="form-select">
+                                <option value="">Selecteaza...</option>
+                                <option value="New">Nou</option>
+                                <option value="Good">Buna</option>
+                                <option value="Worn Out">Uzata</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.BrakeCondition" class="form-label">Stare frane</label>
+                            <select asp-for="PredictionForm.BrakeCondition" class="form-select">
+                                <option value="">Selecteaza...</option>
+                                <option value="New">Nou</option>
+                                <option value="Good">Buna</option>
+                                <option value="Worn Out">Uzate</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PredictionForm.BatteryStatus" class="form-label">Stare baterie</label>
+                            <select asp-for="PredictionForm.BatteryStatus" class="form-select">
+                                <option value="">Selecteaza...</option>
+                                <option value="New">Nou</option>
+                                <option value="Good">Buna</option>
+                                <option value="Weak">Slaba</option>
+                            </select>
                         </div>
                     </div>
                     <div class="mt-3 d-flex align-items-center gap-3">
-                        <button type="submit" class="btn btn-primary">Genereaza</button>
-                        @if (Model.PredictedCost is not null)
+                        <button type="submit" class="btn btn-primary">Verifica</button>
+                        @if (Model.NeedsMaintenance.HasValue)
                         {
-                            <span class="fw-bold">Cost estimat: @Model.PredictedCost lei</span>
+                            <span class="fw-bold @(Model.NeedsMaintenance.Value ? "text-danger" : "text-success")">
+                                @Model.MaintenanceStatus
+                            </span>
                         }
                     </div>
                 </form>

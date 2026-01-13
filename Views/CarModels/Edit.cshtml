@@ -19,6 +19,11 @@
         <span asp-validation-for="YearFrom" class="text-danger"></span>
     </div>
     <div class="mb-3">
+        <label asp-for="VehicleType" class="form-label"></label>
+        <select asp-for="VehicleType" asp-items="ViewBag.VehicleTypes" class="form-select"></select>
+        <span asp-validation-for="VehicleType" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
         <label asp-for="ManufacturerId" class="form-label">Producator</label>
         <select asp-for="ManufacturerId" asp-items="ViewBag.ManufacturerId" class="form-select"></select>
         <span asp-validation-for="ManufacturerId" class="text-danger"></span>

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net.Http.Json;
 using Grpc.Net.Client;
+using System.Net.Http;
 using Kish_AndreiCezar_Project.Data;
 using Kish_AndreiCezar_Project.Models;
 using Kish_AndreiCezar_Project.Models.ViewModels;
@@ -15,12 +16,14 @@ public class HomeController : Controller
     private readonly AppDbContext _context;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<HomeController> _logger;
+    private readonly IConfiguration _configuration;
 
-    public HomeController(AppDbContext context, IHttpClientFactory httpClientFactory, ILogger<HomeController> logger)
+    public HomeController(AppDbContext context, IHttpClientFactory httpClientFactory, ILogger<HomeController> logger, IConfiguration configuration)
     {
         _context = context;
         _httpClientFactory = httpClientFactory;
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task<IActionResult> Index()
@@ -44,7 +47,8 @@ public class HomeController : Controller
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<PredictionResult>();
-                vm.PredictedCost = result?.PredictedCost;
+                vm.NeedsMaintenance = result?.NeedsMaintenance;
+                vm.MaintenanceStatus = result?.MaintenanceStatus;
             }
         }
         catch (Exception ex)
@@ -65,8 +69,21 @@ public class HomeController : Controller
 
         try
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}";
-            using var channel = GrpcChannel.ForAddress(baseUrl);
+            var grpcServerUrl = _configuration["GrpcServer:BaseUrl"] ?? "http://localhost:5001";
+            
+            var httpClientHandler = new HttpClientHandler();
+            var httpClient = new HttpClient(httpClientHandler)
+            {
+                DefaultRequestVersion = new Version(2, 0),
+                DefaultVersionPolicy = System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher
+            };
+            
+            var channelOptions = new GrpcChannelOptions
+            {
+                HttpClient = httpClient
+            };
+            
+            using var channel = GrpcChannel.ForAddress(grpcServerUrl, channelOptions);
             var client = new MaintenanceAdvisor.MaintenanceAdvisorClient(channel);
             var reply = await client.GetScheduleAsync(new MaintenanceRequest
             {
@@ -83,8 +100,8 @@ public class HomeController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Eroare la apelul serviciului gRPC");
-            ModelState.AddModelError("", "Nu s-a putut apela serviciul gRPC.");
+            _logger.LogError(ex, "Eroare la apelul serviciului gRPC: {Message}", ex.Message);
+            ModelState.AddModelError("", $"Nu s-a putut apela serviciul gRPC: {ex.Message}");
         }
 
         return View(nameof(Index), vm);
@@ -116,8 +133,28 @@ public class HomeController : Controller
             MechanicsCount = await _context.Mechanics.CountAsync(),
             TicketsCount = await _context.ServiceTickets.CountAsync(),
             LatestTickets = latestTickets,
-            PredictionForm = new PredictionFormModel { MileageKm = 80000, EstimatedHours = 3, IsPremiumBrand = false },
-            GrpcForm = new GrpcFormModel { CarModel = "Duster", MileageKm = 90000 }
+            PredictionForm = new PredictionFormModel 
+            { 
+                VehicleModel = "Car",
+                MileageKm = 72000,
+                VehicleAge = 4,
+                MaintenanceHistory = "Good",
+                ReportedIssues = 3,
+                FuelType = "Petrol",
+                TransmissionType = "Automatic",
+                EngineSize = 1000,
+                LastServiceDate = DateTime.Now.AddMonths(-6).ToString("yyyy-MM-dd"),
+                WarrantyExpiryDate = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd"),
+                OwnerType = "First",
+                InsurancePremium = 24050,
+                ServiceHistory = 6,
+                AccidentHistory = 1,
+                FuelEfficiency = 16.39f,
+                TireCondition = "Good",
+                BrakeCondition = "New",
+                BatteryStatus = "Good"
+            },
+            GrpcForm = new GrpcFormModel { CarModel = "Car", MileageKm = 145000 }
         };
     }
 }

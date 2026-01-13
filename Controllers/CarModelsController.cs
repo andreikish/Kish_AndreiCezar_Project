@@ -35,6 +35,7 @@ public class CarModelsController : Controller
     public IActionResult Create()
     {
         ViewBag.ManufacturerId = new SelectList(_context.Manufacturers.OrderBy(m => m.Name), "Id", "Name");
+        ViewBag.VehicleTypes = new SelectList(new[] { "Car", "Truck", "Motorcycle", "SUV", "Bus" });
         return View(new CarModel());
     }
 
@@ -45,6 +46,7 @@ public class CarModelsController : Controller
         if (!ModelState.IsValid)
         {
             ViewBag.ManufacturerId = new SelectList(_context.Manufacturers, "Id", "Name", model.ManufacturerId);
+            ViewBag.VehicleTypes = new SelectList(new[] { "Car", "Truck", "Motorcycle", "SUV", "Bus" }, model.VehicleType);
             return View(model);
         }
 
@@ -60,6 +62,7 @@ public class CarModelsController : Controller
         if (model is null) return NotFound();
 
         ViewBag.ManufacturerId = new SelectList(_context.Manufacturers, "Id", "Name", model.ManufacturerId);
+        ViewBag.VehicleTypes = new SelectList(new[] { "Car", "Truck", "Motorcycle", "SUV", "Bus" }, model.VehicleType);
         return View(model);
     }
 
@@ -72,6 +75,7 @@ public class CarModelsController : Controller
         if (!ModelState.IsValid)
         {
             ViewBag.ManufacturerId = new SelectList(_context.Manufacturers, "Id", "Name", model.ManufacturerId);
+            ViewBag.VehicleTypes = new SelectList(new[] { "Car", "Truck", "Motorcycle", "SUV", "Bus" }, model.VehicleType);
             return View(model);
         }
 

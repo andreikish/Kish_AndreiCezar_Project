@@ -13,6 +13,10 @@ public class CarModel
     [Range(1950, 2100)]
     public int YearFrom { get; set; }
 
+    [Required, StringLength(20)]
+    [Display(Name = "Tip")]
+    public string VehicleType { get; set; } = "Car";
+
     public int ManufacturerId { get; set; }
     public Manufacturer? Manufacturer { get; set; }
 

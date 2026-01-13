@@ -1,0 +1,703 @@
+﻿{
+  "Scenario": "Regression",
+  "DataSource": {
+    "Version": 3,
+    "EscapeCharacter": "\"",
+    "ReadMultiLines": false,
+    "KeepDiacritics": false,
+    "KeepPunctuations": false,
+    "AllowQuoting": false,
+    "Type": "TabularFile",
+    "FilePath": "C:\\Users\\andre\\OneDrive\\Desktop\\Master\\Anul 1\\Semestrul 1\\Dezvoltarea de sisteme de Big Data\\Project\\vehicle_maintenance_data.csv",
+    "Delimiter": ",",
+    "DecimalMarker": ".",
+    "HasHeader": true,
+    "ColumnProperties": [
+      {
+        "ColumnName": "Vehicle_Model",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Mileage",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Maintenance_History",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Reported_Issues",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Vehicle_Age",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Fuel_Type",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Transmission_Type",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Engine_Size",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Odometer_Reading",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Last_Service_Date",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Warranty_Expiry_Date",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Owner_Type",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Insurance_Premium",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Service_History",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Accident_History",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Fuel_Efficiency",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Tire_Condition",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Brake_Condition",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Battery_Status",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Need_Maintenance",
+        "ColumnPurpose": "Label",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      }
+    ]
+  },
+  "Environment": {
+    "Type": "LocalCPU",
+    "Version": 1
+  },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.99203121037064146,
+        "RuntimeInSeconds": 0.66,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e7",
+          "e0": {
+            "OutputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ],
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ],
+            "InputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Vehicle_Model",
+            "OutputColumnName": "Vehicle_Model"
+          },
+          "e3": {
+            "InputColumnName": "Last_Service_Date",
+            "OutputColumnName": "Last_Service_Date"
+          },
+          "e4": {
+            "InputColumnName": "Warranty_Expiry_Date",
+            "OutputColumnName": "Warranty_Expiry_Date"
+          },
+          "e5": {
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status",
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency",
+              "Vehicle_Model",
+              "Last_Service_Date",
+              "Warranty_Expiry_Date"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e7": {
+            "NumberOfTrees": 8,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 0.9985319,
+            "LabelColumnName": "Need_Maintenance",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.99071921448087841,
+        "RuntimeInSeconds": 1.084,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e7",
+          "e0": {
+            "OutputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ],
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ],
+            "InputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Vehicle_Model",
+            "OutputColumnName": "Vehicle_Model"
+          },
+          "e3": {
+            "InputColumnName": "Last_Service_Date",
+            "OutputColumnName": "Last_Service_Date"
+          },
+          "e4": {
+            "InputColumnName": "Warranty_Expiry_Date",
+            "OutputColumnName": "Warranty_Expiry_Date"
+          },
+          "e5": {
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status",
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency",
+              "Vehicle_Model",
+              "Last_Service_Date",
+              "Warranty_Expiry_Date"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e7": {
+            "NumberOfTrees": 52,
+            "NumberOfLeaves": 8,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Need_Maintenance",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.98478698693185507,
+        "RuntimeInSeconds": 0.718,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e7",
+          "e0": {
+            "OutputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ],
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ],
+            "InputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Vehicle_Model",
+            "OutputColumnName": "Vehicle_Model"
+          },
+          "e3": {
+            "InputColumnName": "Last_Service_Date",
+            "OutputColumnName": "Last_Service_Date"
+          },
+          "e4": {
+            "InputColumnName": "Warranty_Expiry_Date",
+            "OutputColumnName": "Warranty_Expiry_Date"
+          },
+          "e5": {
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status",
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency",
+              "Vehicle_Model",
+              "Last_Service_Date",
+              "Warranty_Expiry_Date"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e7": {
+            "NumberOfTrees": 5,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 0.96865,
+            "LabelColumnName": "Need_Maintenance",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.97841164779899548,
+        "RuntimeInSeconds": 0.609,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e7",
+          "e0": {
+            "OutputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ],
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ],
+            "InputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Vehicle_Model",
+            "OutputColumnName": "Vehicle_Model"
+          },
+          "e3": {
+            "InputColumnName": "Last_Service_Date",
+            "OutputColumnName": "Last_Service_Date"
+          },
+          "e4": {
+            "InputColumnName": "Warranty_Expiry_Date",
+            "OutputColumnName": "Warranty_Expiry_Date"
+          },
+          "e5": {
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status",
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency",
+              "Vehicle_Model",
+              "Last_Service_Date",
+              "Warranty_Expiry_Date"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e7": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Need_Maintenance",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.97841164779899548,
+        "RuntimeInSeconds": 0.618,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e7",
+          "e0": {
+            "OutputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ],
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ],
+            "InputColumnNames": [
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Vehicle_Model",
+            "OutputColumnName": "Vehicle_Model"
+          },
+          "e3": {
+            "InputColumnName": "Last_Service_Date",
+            "OutputColumnName": "Last_Service_Date"
+          },
+          "e4": {
+            "InputColumnName": "Warranty_Expiry_Date",
+            "OutputColumnName": "Warranty_Expiry_Date"
+          },
+          "e5": {
+            "InputColumnNames": [
+              "Maintenance_History",
+              "Fuel_Type",
+              "Transmission_Type",
+              "Owner_Type",
+              "Tire_Condition",
+              "Brake_Condition",
+              "Battery_Status",
+              "Mileage",
+              "Reported_Issues",
+              "Vehicle_Age",
+              "Engine_Size",
+              "Odometer_Reading",
+              "Insurance_Premium",
+              "Service_History",
+              "Accident_History",
+              "Fuel_Efficiency",
+              "Vehicle_Model",
+              "Last_Service_Date",
+              "Warranty_Expiry_Date"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e7": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 8,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Need_Maintenance",
+            "FeatureColumnName": "Features"
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "OneHotEncoding",
+      "e1": "ReplaceMissingValues",
+      "e2": "FeaturizeText",
+      "e3": "FeaturizeText",
+      "e4": "FeaturizeText",
+      "e5": "Concatenate",
+      "e6": "FastTreeRegression",
+      "e7": "FastForestRegression",
+      "e8": "LightGbmRegression",
+      "e9": "LbfgsPoissonRegressionRegression",
+      "e10": "SdcaRegression"
+    },
+    "Schema": "e0 * e1 * e2 * e3 * e4 * e5 * (e6 + e7 + e8 + e9 + e10)",
+    "MetricName": "RSquared",
+    "ModelFilePath": "C:\\Users\\andre\\OneDrive\\Desktop\\Master\\Anul 1\\Semestrul 1\\Dezvoltarea de sisteme de Big Data\\Proiect\\Kish_AndreiCezar_Project\\MaintenancePredict.mlnet"
+  },
+  "Type": "TrainingConfig",
+  "Version": 5,
+  "TrainingOption": {
+    "Version": 2,
+    "Subsampling": false,
+    "Type": "RegressionTrainingOption",
+    "TrainingTime": 10,
+    "LabelColumn": "Need_Maintenance",
+    "ValidationOption": {
+      "Version": 0,
+      "Type": "TrainValidateSplitValidationOption",
+      "SplitRatio": 0.2
+    }
+  }
+}

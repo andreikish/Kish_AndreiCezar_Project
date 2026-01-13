@@ -47,6 +47,7 @@
             <th>Data intrare</th>
             <th>Client</th>
             <th>Model</th>
+            <th>Tip</th>
             <th>Mecanic</th>
             <th>Status</th>
             <th>Ore</th>
@@ -61,6 +62,7 @@
                 <td>@item.IntakeDate.ToString("yyyy-MM-dd")</td>
                 <td>@item.Customer?.FullName</td>
                 <td>@item.CarModel?.Manufacturer?.Name @item.CarModel?.Name</td>
+                <td>@item.CarModel?.VehicleType</td>
                 <td>@item.Mechanic?.FullName</td>
                 <td>@item.Status</td>
                 <td>@item.EstimatedHours</td>

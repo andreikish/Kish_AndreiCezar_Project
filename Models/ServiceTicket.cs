@@ -21,7 +21,7 @@ public class ServiceTicket
     [Required, StringLength(200)]
     public string Complaint { get; set; } = string.Empty;
 
-    [Range(0, 500000)]
+    [Range(0, 1000000)]
     public int MileageKm { get; set; }
 
     [StringLength(40)]
@@ -30,7 +30,7 @@ public class ServiceTicket
     [Range(0, 200)]
     public float EstimatedHours { get; set; }
 
-    [Range(0, 10000)]
+    [Range(0, 100000)]
     public float EstimatedCost { get; set; }
 }
 

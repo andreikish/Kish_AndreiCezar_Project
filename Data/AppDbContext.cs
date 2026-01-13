@@ -33,9 +33,12 @@ public class AppDbContext : DbContext
         );
 
         modelBuilder.Entity<CarModel>().HasData(
-            new CarModel { Id = 1, Name = "Corolla", YearFrom = 2015, ManufacturerId = 1 },
-            new CarModel { Id = 2, Name = "X5", YearFrom = 2018, ManufacturerId = 2 },
-            new CarModel { Id = 3, Name = "Duster", YearFrom = 2020, ManufacturerId = 3 }
+            new CarModel { Id = 1, Name = "Car", YearFrom = 2020, VehicleType = "Car", ManufacturerId = 1 },
+            new CarModel { Id = 2, Name = "SUV", YearFrom = 2019, VehicleType = "SUV", ManufacturerId = 2 },
+            new CarModel { Id = 3, Name = "Truck", YearFrom = 2018, VehicleType = "Truck", ManufacturerId = 3 },
+            new CarModel { Id = 4, Name = "Van", YearFrom = 2021, VehicleType = "Truck", ManufacturerId = 1 },
+            new CarModel { Id = 5, Name = "Bus", YearFrom = 2017, VehicleType = "Bus", ManufacturerId = 2 },
+            new CarModel { Id = 6, Name = "Motorcycle", YearFrom = 2022, VehicleType = "Motorcycle", ManufacturerId = 3 }
         );
 
         modelBuilder.Entity<Customer>().HasData(
@@ -52,12 +55,12 @@ public class AppDbContext : DbContext
             new ServiceTicket
             {
                 Id = 1,
-                CarModelId = 1,
+                CarModelId = 1, // Car
                 CustomerId = 1,
                 MechanicId = 1,
                 IntakeDate = new DateOnly(2024, 12, 1),
                 Complaint = "Verificare anuala si schimb ulei",
-                MileageKm = 120000,
+                MileageKm = 71128,
                 Status = "Programat",
                 EstimatedHours = 3.5f,
                 EstimatedCost = 900
@@ -65,12 +68,12 @@ public class AppDbContext : DbContext
             new ServiceTicket
             {
                 Id = 2,
-                CarModelId = 3,
+                CarModelId = 2, // SUV
                 CustomerId = 2,
                 MechanicId = 2,
                 IntakeDate = new DateOnly(2024, 12, 5),
                 Complaint = "Vibratii la franare",
-                MileageKm = 80000,
+                MileageKm = 59673,
                 Status = "In lucru",
                 EstimatedHours = 2.5f,
                 EstimatedCost = 650
