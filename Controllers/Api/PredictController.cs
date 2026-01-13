@@ -1,5 +1,6 @@
-using Kish_AndreiCezar_Project.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using System.Text.Json;
 
 namespace Kish_AndreiCezar_Project.Controllers.Api;
 
@@ -7,45 +8,59 @@ namespace Kish_AndreiCezar_Project.Controllers.Api;
 [Route("api/[controller]")]
 public class PredictController : ControllerBase
 {
-    private readonly PredictionEngineService _prediction;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<PredictController> _logger;
 
-    public PredictController(PredictionEngineService prediction)
+    public PredictController(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<PredictController> logger)
     {
-        _prediction = prediction;
+        _httpClientFactory = httpClientFactory;
+        _configuration = configuration;
+        _logger = logger;
     }
 
     [HttpPost]
-    public ActionResult<PredictionResponse> Post([FromBody] PredictionRequest request)
+    public async Task<ActionResult<PredictionResponse>> Post([FromBody] PredictionRequest request)
     {
-        var input = new MaintenancePredictionInput
+        try
         {
-            VehicleModel = request.VehicleModel,
-            Mileage = request.MileageKm,
-            MaintenanceHistory = request.MaintenanceHistory,
-            ReportedIssues = request.ReportedIssues,
-            VehicleAge = request.VehicleAge,
-            FuelType = request.FuelType,
-            TransmissionType = request.TransmissionType,
-            EngineSize = request.EngineSize,
-            OdometerReading = request.MileageKm,
-            LastServiceDate = request.LastServiceDate,
-            WarrantyExpiryDate = request.WarrantyExpiryDate,
-            OwnerType = request.OwnerType,
-            InsurancePremium = request.InsurancePremium,
-            ServiceHistory = request.ServiceHistory,
-            AccidentHistory = request.AccidentHistory,
-            FuelEfficiency = request.FuelEfficiency,
-            TireCondition = request.TireCondition,
-            BrakeCondition = request.BrakeCondition,
-            BatteryStatus = request.BatteryStatus
-        };
-
-        var needsMaintenance = _prediction.PredictMaintenanceNeed(input);
-        return Ok(new PredictionResponse 
-        { 
-            NeedsMaintenance = needsMaintenance,
-            MaintenanceStatus = needsMaintenance ? "Da, este nevoie de maintenance" : "Nu, nu este nevoie de maintenance"
-        });
+            var mlServiceUrl = _configuration["MLService:BaseUrl"] ?? "http://localhost:5002";
+            var httpClient = _httpClientFactory.CreateClient();
+            
+            var json = JsonSerializer.Serialize(request);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            
+            var response = await httpClient.PostAsync($"{mlServiceUrl}/api/predict", content);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var predictionResponse = JsonSerializer.Deserialize<PredictionResponse>(responseContent, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                
+                return Ok(predictionResponse);
+            }
+            else
+            {
+                _logger.LogError("ML Service returned error: {StatusCode} - {ReasonPhrase}", response.StatusCode, response.ReasonPhrase);
+                return StatusCode(500, new PredictionResponse 
+                { 
+                    NeedsMaintenance = false,
+                    MaintenanceStatus = "Eroare la comunicarea cu serviciul ML"
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Eroare la apelarea serviciului ML");
+            return StatusCode(500, new PredictionResponse 
+            { 
+                NeedsMaintenance = false,
+                MaintenanceStatus = $"Eroare: {ex.Message}"
+            });
+        }
     }
 }
 

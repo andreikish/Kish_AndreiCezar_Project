@@ -7,6 +7,7 @@ using Kish_AndreiCezar_Project.Models;
 using Kish_AndreiCezar_Project.Models.ViewModels;
 using Kish_AndreiCezar_Project.Protos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kish_AndreiCezar_Project.Controllers;
@@ -36,25 +37,35 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Predict(DashboardViewModel model)
     {
+        ModelState.Remove("GrpcForm.CarModelId");
+        ModelState.Remove("GrpcForm.MileageKm");
+        ModelState.Remove("GrpcForm");
+        
         var vm = await BuildDashboardAsync();
         vm.PredictionForm = model.PredictionForm;
+        vm.GrpcForm = new GrpcFormModel { MileageKm = 145000 };
 
         try
         {
+            var mlServiceUrl = _configuration["MLService:BaseUrl"] ?? "http://localhost:5002";
             var client = _httpClientFactory.CreateClient();
-            var baseUrl = $"{Request.Scheme}://{Request.Host}";
-            var response = await client.PostAsJsonAsync($"{baseUrl}/api/predict", vm.PredictionForm);
+            var response = await client.PostAsJsonAsync($"{mlServiceUrl}/api/predict", vm.PredictionForm);
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<PredictionResult>();
                 vm.NeedsMaintenance = result?.NeedsMaintenance;
                 vm.MaintenanceStatus = result?.MaintenanceStatus;
             }
+            else
+            {
+                _logger.LogError("ML Service returned error: {StatusCode} - {ReasonPhrase}", response.StatusCode, response.ReasonPhrase);
+                ModelState.AddModelError("", "Serviciul ML a returnat o eroare.");
+            }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Eroare la consumarea serviciului REST ML");
-            ModelState.AddModelError("", "Nu s-a putut apela serviciul de predictie.");
+            ModelState.AddModelError("", $"Nu s-a putut apela serviciul de predictie: {ex.Message}");
         }
 
         return View(nameof(Index), vm);
@@ -66,6 +77,24 @@ public class HomeController : Controller
     {
         var vm = await BuildDashboardAsync();
         vm.GrpcForm = model.GrpcForm;
+
+        if (!model.GrpcForm.CarModelId.HasValue)
+        {
+            ModelState.AddModelError("GrpcForm.CarModelId", "Selectează un model de vehicul.");
+            return View(nameof(Index), vm);
+        }
+
+        var localCarModel = await _context.CarModels
+            .Include(c => c.Manufacturer)
+            .FirstOrDefaultAsync(c => c.Id == model.GrpcForm.CarModelId.Value);
+
+        if (localCarModel == null)
+        {
+            ModelState.AddModelError("GrpcForm.CarModelId", "Modelul selectat nu a fost găsit.");
+            return View(nameof(Index), vm);
+        }
+
+        var vehicleType = localCarModel.VehicleType;
 
         try
         {
@@ -85,9 +114,10 @@ public class HomeController : Controller
             
             using var channel = GrpcChannel.ForAddress(grpcServerUrl, channelOptions);
             var client = new MaintenanceAdvisor.MaintenanceAdvisorClient(channel);
+            
             var reply = await client.GetScheduleAsync(new MaintenanceRequest
             {
-                CarModel = model.GrpcForm.CarModel,
+                CarModel = vehicleType,
                 MileageKm = model.GrpcForm.MileageKm
             });
 
@@ -125,6 +155,20 @@ public class HomeController : Controller
             .Take(5)
             .ToListAsync();
 
+        var carModels = await _context.CarModels
+            .Include(c => c.Manufacturer)
+            .OrderBy(c => c.Manufacturer!.Name)
+            .ThenBy(c => c.Name)
+            .ToListAsync();
+
+        var carModelSelectList = carModels.Select(c => new SelectListItem
+        {
+            Value = c.Id.ToString(),
+            Text = $"{c.Manufacturer?.Name} {c.Name} ({c.VehicleType})"
+        }).ToList();
+
+        ViewBag.CarModelId = new SelectList(carModelSelectList, "Value", "Text");
+
         return new DashboardViewModel
         {
             ManufacturersCount = await _context.Manufacturers.CountAsync(),
@@ -154,7 +198,7 @@ public class HomeController : Controller
                 BrakeCondition = "New",
                 BatteryStatus = "Good"
             },
-            GrpcForm = new GrpcFormModel { CarModel = "Car", MileageKm = 145000 }
+            GrpcForm = new GrpcFormModel { MileageKm = 145000 }
         };
     }
 }

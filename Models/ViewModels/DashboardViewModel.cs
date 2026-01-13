@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Kish_AndreiCezar_Project.Models;
 
 namespace Kish_AndreiCezar_Project.Models.ViewModels;
@@ -50,7 +51,13 @@ public class PredictionResult
 
 public class GrpcFormModel
 {
-    public string CarModel { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Selecteaza un model de vehicul.")]
+    [Display(Name = "Model")]
+    public int? CarModelId { get; set; }
+    
+    [Required(ErrorMessage = "Introdu kilometrajul.")]
+    [Range(0, int.MaxValue, ErrorMessage = "Kilometrajul trebuie sa fie un numar pozitiv.")]
+    [Display(Name = "Kilometraj")]
     public int MileageKm { get; set; }
 }
 

@@ -184,16 +184,20 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row g-2">
                         <div class="col-md-8">
-                            <label asp-for="GrpcForm.CarModel" class="form-label">Model</label>
-                            <input asp-for="GrpcForm.CarModel" class="form-control" />
+                            <label asp-for="GrpcForm.CarModelId" class="form-label">Model</label>
+                            <select asp-for="GrpcForm.CarModelId" asp-items="ViewBag.CarModelId" class="form-select">
+                                <option value="">Selecteaza un model...</option>
+                            </select>
+                            <span asp-validation-for="GrpcForm.CarModelId" class="text-danger"></span>
                         </div>
                         <div class="col-md-4">
-                            <label asp-for="GrpcForm.MileageKm" class="form-label">Kilometraj</label>
-                            <input asp-for="GrpcForm.MileageKm" class="form-control" />
+                            <label asp-for="GrpcForm.MileageKm" class="form-label">Kilometraj (km)</label>
+                            <input asp-for="GrpcForm.MileageKm" class="form-control" type="number" />
+                            <span asp-validation-for="GrpcForm.MileageKm" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="mt-3 d-flex align-items-center gap-3">
-                        <button type="submit" class="btn btn-outline-primary">Solicita</button>
+                        <button type="submit" class="btn btn-outline-primary">Obtine recomandari</button>
                         @if (Model.GrpcResult is not null)
                         {
                             <span class="fw-bold">@Model.GrpcResult.Severity</span>

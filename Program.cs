@@ -1,5 +1,4 @@
 using Kish_AndreiCezar_Project.Data;
-using Kish_AndreiCezar_Project.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -9,7 +8,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
-builder.Services.AddSingleton<PredictionEngineService>();
 
 var app = builder.Build();
 
